@@ -13,6 +13,10 @@ import java.util.Arrays;
 @Configuration
 public class SecurityConfig {
 
+
+    // ✅ Configuration de sécurité
+    //enable CORS
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http

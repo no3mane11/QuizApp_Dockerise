@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.List;
 
 @RestController
+
+// ✅ Utilisation de @RequestMapping pour définir le préfixe de l'URL
 @RequestMapping("/api/attempts")
 @RequiredArgsConstructor
 public class AttemptController {
