@@ -27,12 +27,6 @@ const HomePage = () => {
           My Dashboard
         </Link>
 
-        <Link
-          to="/auth"
-          className="px-8 py-4 bg-green-500 text-white text-lg font-semibold rounded-lg hover:bg-green-600 transition"
-        >
-          Sign In / Sign Up
-        </Link>
       </div>
 
       <div className="mt-16 text-gray-400 text-sm">
