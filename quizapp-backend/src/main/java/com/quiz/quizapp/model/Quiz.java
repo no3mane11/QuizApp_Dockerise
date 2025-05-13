@@ -18,7 +18,17 @@ public class Quiz {
     private String title;
     private String description;
     private List<Question> questions;
+    private String category; // ID de la catégorie liée
 
     private String createdBy; // userId
     private Date createdAt;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
 }

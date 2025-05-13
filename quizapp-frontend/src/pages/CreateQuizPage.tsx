@@ -1,6 +1,7 @@
 // src/pages/CreateQuizPage.tsx
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useQuiz } from '../context/QuizContext';
+import { fetchCategories } from '../api/categoryApi';
 import { useAuth } from '../context/AuthContext';
 import { createQuizApi } from '../api/quizApi';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +11,8 @@ const CreateQuizPage = () => {
   const { addQuiz } = useQuiz();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -23,6 +26,20 @@ const CreateQuizPage = () => {
       explanation: '',
     },
   ]);
+
+  useEffect(() => {
+  const loadCategories = async () => {
+    try {
+      const data = await fetchCategories();
+      setCategories(data);
+      if (data.length > 0) setSelectedCategory(data[0].id);
+    } catch (error) {
+      console.error('Erreur de chargement des catégories', error);
+    }
+  };
+  loadCategories();
+}, []);
+
 
   const handleQuestionChange = (index: number, field: string, value: string) => {
     const newQuestions = [...questions];
@@ -75,16 +92,16 @@ const CreateQuizPage = () => {
         return;
       }
     }
-
-    const newQuiz = {
-      title,
-      description,
-      createdBy: user.id,
-      questions: questions.map((q) => ({
-        ...q,
-        options: q.type === 'multiple-choice' ? q.options?.filter((opt) => opt.trim() !== '') : undefined,
-      })),
-    };
+const newQuiz = {
+  title,
+  description,
+  createdBy: user.id,
+  category: selectedCategory, 
+  questions: questions.map((q) => ({
+    ...q,
+    options: q.type === 'multiple-choice' ? q.options?.filter((opt) => opt.trim() !== '') : undefined,
+  })),
+};
 
     try {
       const savedQuiz = await createQuizApi(newQuiz);
@@ -121,6 +138,22 @@ const CreateQuizPage = () => {
             required
           ></textarea>
         </div>
+<div>
+  <label className="block font-semibold mb-1">Catégorie</label>
+  {categories.length === 0 ? (
+    <p className="text-red-500">Aucune catégorie disponible. Veuillez en créer une d'abord.</p>
+  ) : (
+    <select
+      className="border w-full p-2 rounded"
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+    >
+      {categories.map((cat) => (
+        <option key={cat.id} value={cat.id}>{cat.name}</option>
+      ))}
+    </select>
+  )}
+</div>
 
         <div>
           <h2 className="text-2xl font-semibold mb-4">Questions</h2>
