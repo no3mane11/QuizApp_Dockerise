@@ -28,10 +28,18 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private UserRepository userRepository;
 
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        // 🔒 Ignore les routes publiques (auth et docs Swagger)
+        String path = request.getServletPath();
+        if (path.startsWith("/api/auth") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {

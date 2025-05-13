@@ -9,7 +9,7 @@ services:
     networks:
       - app-network
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb+srv://guess:0aGRADHax24DXzCL@cluster0.wgaas.mongodb.net/portfolio
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://sami:GK0N8o2x0GjSamYX@cluster0.jdjshgx.mongodb.net/quizapp?retryWrites=true&w=majority&appName=Cluster0
       - SPRING_DATA_MONGODB_DATABASE=quizapp
 
   frontend:
