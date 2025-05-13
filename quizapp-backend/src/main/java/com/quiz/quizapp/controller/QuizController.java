@@ -17,7 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @SecurityRequirement(name = "BearerAuth")
 @RestController
 @RequestMapping("/api/quizzes")
-@CrossOrigin(origins = "http://localhost:3000")
+
 public class QuizController {
 
     @Autowired

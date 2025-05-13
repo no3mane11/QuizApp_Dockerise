@@ -18,7 +18,6 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("/api/attempts")
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class AttemptController {
 
