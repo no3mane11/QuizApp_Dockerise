@@ -6,20 +6,25 @@ import com.quiz.quizapp.repository.QuizAttemptRepository;
 import com.quiz.quizapp.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
-@RestController
 
-// ✅ Utilisation de @RequestMapping pour définir le préfixe de l'URL
+@SecurityRequirement(name = "BearerAuth")
+@PreAuthorize("isAuthenticated()")
+@RestController
 @RequestMapping("/api/attempts")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class AttemptController {
 
     private final QuizRepository quizRepository;
     private final QuizAttemptRepository attemptRepository;
+
 
     @PostMapping("/submit")
     public QuizAttempt submitAttempt(@RequestBody QuizAttempt attempt) {
@@ -55,6 +60,7 @@ public class AttemptController {
 
         return attemptRepository.save(attempt);
     }
+
 
     @GetMapping("/user/{userId}")
     public List<QuizAttempt> getUserAttempts(@PathVariable String userId) {

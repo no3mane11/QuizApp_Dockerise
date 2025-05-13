@@ -1,14 +1,65 @@
-// src/pages/BrowseQuizzesPage.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuiz } from '../context/QuizContext';
+import { fetchCategories, fetchQuizzesByCategory, Category } from '../api/categoryApi';
+import { getAllQuizzes } from '../api/quizApi';
+
+interface Quiz {
+  id: string;
+  title: string;
+  description: string;
+  questions: any[];
+}
 
 const BrowseQuizzesPage = () => {
-  const { quizzes, fetchQuizzes } = useQuiz();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchQuizzes();
-  }, [fetchQuizzes]);
+    const loadCategories = async () => {
+      try {
+        const data = await fetchCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    };
+
+    const loadQuizzes = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllQuizzes();
+        setQuizzes(data);
+      } catch (error) {
+        console.error('Error loading quizzes:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCategories();
+    loadQuizzes();
+  }, []);
+
+  const handleCategoryChange = async (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setLoading(true);
+
+    try {
+      let data;
+      if (categoryId === 'all') {
+        data = await getAllQuizzes();
+      } else {
+        data = await fetchQuizzesByCategory(categoryId);
+      }
+      setQuizzes(data);
+    } catch (error) {
+      console.error('Error fetching quizzes by category:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="p-8">
@@ -16,27 +67,47 @@ const BrowseQuizzesPage = () => {
         📚 Browse Public Quizzes
       </h1>
 
-      {quizzes.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">No quizzes available yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {quizzes.map((quiz) => (
-            <div
-              key={quiz.id}
-              className="bg-white p-6 rounded-lg shadow-md hover:scale-105 transition-transform duration-300 hover:shadow-xl"
-            >
-              <h2 className="text-2xl font-bold mb-2">{quiz.title}</h2>
-              <p className="text-gray-600 mb-4">{quiz.description}</p>
+      <div className="mb-6">
+        <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-2">
+          Filter by category:
+        </label>
+        <select
+          id="category-select"
+          value={selectedCategory}
+          onChange={(e) => handleCategoryChange(e.target.value)}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        >
+          <option value="all">All Categories</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
+      {loading ? (
+        <div className="flex justify-center items-center py-10">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-700"></div>
+        </div>
+      ) : quizzes.length === 0 ? (
+        <p className="text-gray-500 mt-4 text-center">No quizzes found.</p>
+      ) : (
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {quizzes.map((quiz) => (
+            <li key={quiz.id} className="bg-white p-4 rounded shadow hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-semibold mb-2">{quiz.title}</h3>
+              <p className="text-gray-600 mb-2">{quiz.description}</p>
+              <p className="text-sm text-blue-600">Questions: {quiz.questions.length}</p>
               <Link
                 to={`/quiz/${quiz.id}`}
-                className="inline-block px-6 py-2 mt-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                className="inline-block mt-2 text-blue-500 hover:underline"
               >
-                Take Quiz
+                📘 Start this quiz
               </Link>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

@@ -1,20 +1,30 @@
 package com.quiz.quizapp.controller;
 
-import com.quiz.quizapp.model.Quiz;
-import com.quiz.quizapp.repository.QuizRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.quiz.quizapp.model.Quiz;
+import com.quiz.quizapp.model.Category;
+import com.quiz.quizapp.repository.QuizRepository;
+import com.quiz.quizapp.repository.CategoryRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+@PreAuthorize("isAuthenticated()")
+@SecurityRequirement(name = "BearerAuth")
 @RestController
 @RequestMapping("/api/quizzes")
-@CrossOrigin(origins = "http://localhost:3000") // adapte si nécessaire
+@CrossOrigin(origins = "http://localhost:3000")
 public class QuizController {
 
     @Autowired
     private QuizRepository quizRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     // ✅ Créer un nouveau quiz
     @PostMapping
@@ -22,7 +32,7 @@ public class QuizController {
         return quizRepository.save(quiz);
     }
 
-    // ✅ Obtenir TOUS les quizzes (avec champ "id")
+    // ✅ Obtenir TOUS les quizzes (avec champ "id" et nom de la catégorie)
     @GetMapping
     public List<Map<String, Object>> getAllQuizzes() {
         return quizRepository.findAll().stream().map(quiz -> {
@@ -33,11 +43,19 @@ public class QuizController {
             map.put("questions", quiz.getQuestions());
             map.put("createdBy", quiz.getCreatedBy());
             map.put("createdAt", quiz.getCreatedAt());
+            map.put("categoryId", quiz.getCategory());
+
+            // 🔍 Ajout : récupérer le nom de la catégorie
+            if (quiz.getCategory() != null) {
+                Optional<Category> category = categoryRepository.findById(quiz.getCategory());
+                category.ifPresent(value -> map.put("categoryName", value.getName()));
+            }
+
             return map;
         }).collect(Collectors.toList());
     }
 
-    // ✅ Obtenir un quiz par ID (optionnel : même format)
+    // ✅ Obtenir un quiz par ID (avec nom de catégorie)
     @GetMapping("/{id}")
     public Optional<Map<String, Object>> getQuizById(@PathVariable String id) {
         return quizRepository.findById(id).map(quiz -> {
@@ -48,7 +66,37 @@ public class QuizController {
             map.put("questions", quiz.getQuestions());
             map.put("createdBy", quiz.getCreatedBy());
             map.put("createdAt", quiz.getCreatedAt());
+            map.put("categoryId", quiz.getCategory());
+
+            if (quiz.getCategory() != null) {
+                Optional<Category> category = categoryRepository.findById(quiz.getCategory());
+                category.ifPresent(value -> map.put("categoryName", value.getName()));
+            }
+
             return map;
         });
+    }
+
+    @PutMapping("/{id}")
+    public Quiz updateQuiz(@PathVariable String id, @RequestBody Quiz updatedQuiz) {
+        return quizRepository.findById(id).map(quiz -> {
+            quiz.setTitle(updatedQuiz.getTitle());
+            quiz.setDescription(updatedQuiz.getDescription());
+            quiz.setQuestions(updatedQuiz.getQuestions());
+            quiz.setCreatedBy(updatedQuiz.getCreatedBy());
+            quiz.setCreatedAt(updatedQuiz.getCreatedAt());
+            quiz.setCategory(updatedQuiz.getCategory()); // 🔁 important
+            return quizRepository.save(quiz);
+        }).orElseThrow(() -> new RuntimeException("Quiz not found with id: " + id));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteQuiz(@PathVariable String id) {
+        if (!quizRepository.existsById(id)) {
+            throw new RuntimeException("Quiz not found with id: " + id);
+        }
+        quizRepository.deleteById(id);
+        return "Quiz deleted successfully with id: " + id;
     }
 }

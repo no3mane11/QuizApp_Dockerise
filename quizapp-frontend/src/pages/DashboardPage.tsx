@@ -23,6 +23,9 @@ const DashboardPage = () => {
   const { fetchUserAttempts, attempts } = useAttempt();
   const [loading, setLoading] = useState(true);
 
+  const { isAdmin } = useAuth();
+
+
   useEffect(() => {
     const fetchData = async () => {
       await fetchQuizzes();

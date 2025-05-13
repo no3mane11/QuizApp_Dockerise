@@ -1,17 +1,6 @@
 version: "3.8"
 
 services:
-  mongo:
-    image: mongo:6
-    container_name: quizapp-mongo
-    restart: always
-    ports:
-      - "27017:27017"
-    networks:
-      - app-network
-    volumes:
-      - mongo-data:/data/db
-
   backend:
     build: ./quizapp-backend
     container_name: quizapp-backend
@@ -20,6 +9,7 @@ services:
     networks:
       - app-network
     environment:
+
       - SPRING_DATA_MONGODB_URI=mongodb+srv://noamanehaimoudi79:12345678s@quizapp.p1xjaxb.mongodb.net/quizapp?retryWrites=true&w=majority&appName=quizapp
       - SPRING_DATA_MONGODB_DATABASE=quizapp
 
