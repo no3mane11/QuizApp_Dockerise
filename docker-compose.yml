@@ -9,14 +9,15 @@ services:
     networks:
       - app-network
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb+srv://guess:0aGRADHax24DXzCL@cluster0.wgaas.mongodb.net/portfolio
+
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://noamanehaimoudi79:12345678s@quizapp.p1xjaxb.mongodb.net/quizapp?retryWrites=true&w=majority&appName=quizapp
       - SPRING_DATA_MONGODB_DATABASE=quizapp
 
   frontend:
     build: ./quizapp-frontend
     container_name: quizapp-frontend
     ports:
-      - "3000:80"  # Vite sera buildé en production, servi avec nginx par exemple
+      - "3000:80"
     depends_on:
       - backend
     networks:
