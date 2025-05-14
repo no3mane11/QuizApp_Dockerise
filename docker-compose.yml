@@ -16,6 +16,7 @@ services:
 
       - SPRING_DATA_MONGODB_URI=mongodb+srv://sami:GK0N8o2x0GjSamYX@cluster0.jdjshgx.mongodb.net/quizapp?retryWrites=true&w=majority&appName=Cluster0
       - SPRING_DATA_MONGODB_DATABASE=quizapp
+      - JWT_SECRET=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
   frontend:
     build: ./quizapp-frontend
