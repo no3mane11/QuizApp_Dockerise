@@ -9,12 +9,16 @@ import CreateQuizPage from './pages/CreateQuizPage';
 import TakeQuizPage from './pages/TakeQuizPage';
 import ResultsPage from './pages/ResultsPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ProfilePage from './pages/ProfilePage';
 import BrowseQuizzesPage from './pages/BrowseQuizzesPage';
 import CreateCategoryPage from './pages/admin/CreateCategoryPage'
-import ManageUsersPage from './pages/admin/ManageUsersPage'; // <-- Ajouté ici !!
+import ManageUsersPage from './pages/admin/ManageUsersPage';
+import ManageQuizzesPage from './pages/admin/ManageQuizPage'; 
+import EditSingleQuizPage from './pages/admin/EditSingleQuizPage';// <-- Ajouté ici !!
 import { QuizProvider } from './context/QuizContext';
 import { AuthProvider } from './context/AuthContext';
 import { AttemptProvider } from './context/AttemptContext';
+
 
 function App() {
   return (
@@ -35,7 +39,11 @@ function App() {
                   <Route path="/browse-quizzes" element={<BrowseQuizzesPage />} />
                   <Route path="/admin/create-category" element={<CreateCategoryPage />} />
                   <Route path="/admin/manage-users" element={<ManageUsersPage />} />
-                  <Route path='/admin/manage-users' element={<DashboardPage />} />
+                  <Route path='/admin/manage-quizzes' element={<ManageQuizzesPage />} />
+                  <Route path='/admin/edit-quiz/:quizId' element={<EditSingleQuizPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+ {/* Ajouté ici !! */}
+
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </main>

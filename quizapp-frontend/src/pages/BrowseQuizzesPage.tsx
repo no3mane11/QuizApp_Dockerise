@@ -7,9 +7,10 @@ interface Quiz {
   id: string;
   title: string;
   description: string;
-  questions: any[];
+  questions: any[] | null | undefined; // Pour être plus tolérant avec les retours API
 }
 
+// ✅ Page pour parcourir les quiz publics
 const BrowseQuizzesPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -98,7 +99,9 @@ const BrowseQuizzesPage = () => {
             <li key={quiz.id} className="bg-white p-4 rounded shadow hover:shadow-md transition-shadow">
               <h3 className="text-lg font-semibold mb-2">{quiz.title}</h3>
               <p className="text-gray-600 mb-2">{quiz.description}</p>
-              <p className="text-sm text-blue-600">Questions: {quiz.questions.length}</p>
+          <p className="text-sm text-blue-600">
+  Questions: {quiz.questions?.length ?? 0}
+</p>
               <Link
                 to={`/quiz/${quiz.id}`}
                 className="inline-block mt-2 text-blue-500 hover:underline"

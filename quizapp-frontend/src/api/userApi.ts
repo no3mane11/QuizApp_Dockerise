@@ -22,8 +22,9 @@ export const getUserById = async (id: string) => {
   return res.data;
 };
 
+
 // ✅ PUT /api/users/{id}
-export const updateUserById = async (id: string, userData: any) => {
+export const updateUserById = async (id: string, userData:any) => {
   const res = await api.put(`/users/${id}`, userData, authHeaders());
   return res.data;
 };

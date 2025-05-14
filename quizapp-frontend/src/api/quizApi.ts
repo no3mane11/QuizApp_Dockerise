@@ -18,3 +18,16 @@ export const getQuizById = async (quizId: string): Promise<Quiz> => {
   const response = await api.get(`/quizzes/${quizId}`);
   return response.data;
 };
+
+
+// ✅ PUT mettre à jour un quiz
+export const updateQuizApi = async (quizId: string, quizData: Partial<Quiz>) => {
+  const response = await api.put(`/quizzes/${quizId}`, quizData);
+  return response.data;
+};
+
+// ✅ DELETE un quiz par ID
+export const deleteQuizById = async (quizId: string) => {
+  const response = await api.delete(`/quizzes/${quizId}`);
+  return response.data;
+}

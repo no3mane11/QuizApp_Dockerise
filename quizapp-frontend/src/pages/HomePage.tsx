@@ -20,7 +20,7 @@ const HomePage = () => {
   <div className="mb-6 text-right">
     <Link
       to="/create-quiz"
-      className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+       className="px-8 py-4 bg-green-200 text-gray-800 text-lg font-semibold rounded-lg hover:bg-gray-300 transition"
     >
       ➕ Créer un nouveau quiz
     </Link>
