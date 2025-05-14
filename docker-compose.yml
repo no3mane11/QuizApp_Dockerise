@@ -10,11 +10,7 @@ services:
       - app-network
     environment:
 
-      #******************************************IMPORTANT*********************************************
-      #dir had lien bach nkhdmo bnafss data (Cluster0) : 
-      # LIEN = mongodb+srv://no3mane:Cf5pXW1LROe5z8n0@cluster0.jdjshgx.mongodb.net/quizapp?retryWrites=true&w=majority&appName=Cluster0
-
-      - SPRING_DATA_MONGODB_URI=mongodb+srv://sami:GK0N8o2x0GjSamYX@cluster0.jdjshgx.mongodb.net/quizapp?retryWrites=true&w=majority&appName=Cluster0
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://noamanehaimoudi79:12345678s@quizapp.p1xjaxb.mongodb.net/quizapp?retryWrites=true&w=majority&appName=quizapp
       - SPRING_DATA_MONGODB_DATABASE=quizapp
 
   frontend:
@@ -33,4 +29,3 @@ networks:
 
 volumes:
   mongo-data:
-
