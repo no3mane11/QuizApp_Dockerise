@@ -9,7 +9,9 @@ import CreateQuizPage from './pages/CreateQuizPage';
 import TakeQuizPage from './pages/TakeQuizPage';
 import ResultsPage from './pages/ResultsPage';
 import NotFoundPage from './pages/NotFoundPage';
-import BrowseQuizzesPage from './pages/BrowseQuizzesPage'; // <-- Ajouté ici !!
+import BrowseQuizzesPage from './pages/BrowseQuizzesPage';
+import CreateCategoryPage from './pages/admin/CreateCategoryPage'
+import ManageUsersPage from './pages/admin/ManageUsersPage'; // <-- Ajouté ici !!
 import { QuizProvider } from './context/QuizContext';
 import { AuthProvider } from './context/AuthContext';
 import { AttemptProvider } from './context/AttemptContext';
@@ -30,7 +32,10 @@ function App() {
                   <Route path="/create-quiz" element={<CreateQuizPage />} />
                   <Route path="/quiz/:id" element={<TakeQuizPage />} />
                   <Route path="/results/:id" element={<ResultsPage />} />
-                  <Route path="/browse-quizzes" element={<BrowseQuizzesPage />} /> {/* Ajouté ici !! */}
+                  <Route path="/browse-quizzes" element={<BrowseQuizzesPage />} />
+                  <Route path="/admin/create-category" element={<CreateCategoryPage />} />
+                  <Route path="/admin/manage-users" element={<ManageUsersPage />} />
+                  <Route path='/admin/manage-users' element={<DashboardPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </main>
