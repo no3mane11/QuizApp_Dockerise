@@ -1,4 +1,6 @@
 import api from './api';
+import axios from 'axios';
+import { User } from '../types';
 
 // 🔐 Ajouter automatiquement le token JWT si besoin
 const authHeaders = () => {
@@ -22,6 +24,11 @@ export const getUserById = async (id: string) => {
   return res.data;
 };
 
+
+export const updateCurrentUser = async (data: Partial<User>) => {
+  const response = await axios.put('/users/me', data);
+  return response.data;
+};
 
 // ✅ PUT /api/users/{id}
 export const updateUserById = async (id: string, userData:any) => {

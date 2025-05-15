@@ -4,6 +4,7 @@ import java.util.*;
 import com.quiz.quizapp.model.User;
 import com.quiz.quizapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -55,4 +56,17 @@ public class UserController {
         userRepository.deleteById(id);
         return "User deleted successfully with id: " + id;
     }
+
+     @PutMapping("/me")
+public User updateCurrentUser(@AuthenticationPrincipal User currentUser, @RequestBody User updatedData) {
+    if (updatedData.getUsername() != null) {
+        currentUser.setUsername(updatedData.getUsername());
+    }
+    if (updatedData.getEmail() != null) {
+        currentUser.setEmail(updatedData.getEmail());
+    }
+    // Optionnel : on ne modifie pas le rôle ni le mot de passe ici
+    return userRepository.save(currentUser);
+}
+
 }

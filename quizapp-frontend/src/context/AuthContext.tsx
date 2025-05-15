@@ -17,7 +17,9 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+  setUser: (user: User) => void; // 👈 à ajouter
 }
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -35,6 +37,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  
   const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -104,6 +107,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       login,
       signup,
       logout,
+      setUser, 
     }}>
       {children}
     </AuthContext.Provider>

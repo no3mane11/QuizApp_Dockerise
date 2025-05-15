@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchCategories, fetchQuizzesByCategory, Category } from '../api/categoryApi';
 import { getAllQuizzes } from '../api/quizApi';
+import SidebarLayout from '../pages/SidebarLayout';
 
 interface Quiz {
   id: string;
@@ -63,6 +64,7 @@ const BrowseQuizzesPage = () => {
   };
 
   return (
+    <SidebarLayout>
     <div className="p-8">
       <h1 className="text-4xl font-bold mb-8 text-center text-blue-700">
         📚 Browse Public Quizzes
@@ -77,7 +79,7 @@ const BrowseQuizzesPage = () => {
           value={selectedCategory}
           onChange={(e) => handleCategoryChange(e.target.value)}
           className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-        >
+          >
           <option value="all">All Categories</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
@@ -105,7 +107,7 @@ const BrowseQuizzesPage = () => {
               <Link
                 to={`/quiz/${quiz.id}`}
                 className="inline-block mt-2 text-blue-500 hover:underline"
-              >
+                >
                 📘 Start this quiz
               </Link>
             </li>
@@ -113,6 +115,7 @@ const BrowseQuizzesPage = () => {
         </ul>
       )}
     </div>
+</SidebarLayout>
   );
 };
 

@@ -3,7 +3,7 @@ import { useQuiz } from '../context/QuizContext';
 import { useAttempt } from '../context/AttemptContext';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
-import SidebarLayout from '../pages/SidebarLayout';
+
 import {
   BarChart,
   Bar,
@@ -40,7 +40,7 @@ const DashboardPage = () => {
   if (loading) return <div className="text-center py-20 text-xl text-gray-500">Chargement du tableau de bord...</div>;
 
   return (
-        <SidebarLayout>
+    
     <div className="max-w-7xl mx-auto px-6 py-10">
       <h1 className="text-4xl font-bold text-center mb-10">📊 Tableau de bord de {user?.username}</h1>
 
@@ -156,7 +156,7 @@ const DashboardPage = () => {
         )}
       </section>
     </div>
-    </SidebarLayout>
+ 
   );
 };
 

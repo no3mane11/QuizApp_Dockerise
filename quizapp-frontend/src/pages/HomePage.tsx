@@ -2,11 +2,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import SidebarLayout from "../pages/SidebarLayout";
 
 const HomePage = () => {
   const { isAdmin } = useAuth();
 
   return (
+    <SidebarLayout>
     <div className="min-h-[calc(100vh-64px)] flex flex-col justify-center items-center text-center px-4 bg-gradient-to-b from-blue-100 via-white to-white">
       <h1 className="text-5xl md:text-6xl font-extrabold text-blue-700 mb-4">
         Welcome to QuizGenius 🎯
@@ -26,13 +28,19 @@ const HomePage = () => {
     </Link>
   </div>
 )}
-
-        <Link
+      <div className="flex flex-col md:flex-row gap-6">
+          <div className="mb-6 text-right">
+       
+ <Link
           to="/dashboard"
           className="px-8 py-4 bg-gray-200 text-gray-800 text-lg font-semibold rounded-lg hover:bg-gray-300 transition"
         >
           My Dashboard
         </Link>
+       
+          </div>
+      </div>
+       
 
       </div>
 
@@ -40,6 +48,7 @@ const HomePage = () => {
         © 2025 QuizGenius. All rights reserved.
       </div>
     </div>
+    </SidebarLayout>
   );
 };
 

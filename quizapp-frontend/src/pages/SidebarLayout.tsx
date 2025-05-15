@@ -14,9 +14,9 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children }) => {
   const isActive = (path: string) => location.pathname.startsWith(path);
 
   const adminLinks = [
-    { to: '/manage-users', label: 'Gestion utilisateurs' },
-    { to: '/create-category', label: 'Créer une catégorie' },
-    { to: '/create-quiz', label: 'Créer un quiz' },
+    { to: '/admin/manage-users', label: 'Gestion utilisateurs' },
+    { to: '/admin/create-category', label: 'Créer une catégorie' },
+    { to: '/admin/manage-quizzes', label: 'Gestion des quiz' },
   ];
 
   return (
