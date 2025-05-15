@@ -13,7 +13,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins("https://quizapp-frontend-todeploy.vercel.app")
+                    .allowedOrigins("https://quizapp-frontend-todeploy-fsfgioix1-sami3ls-projects.vercel.app/")
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true); // 🍪 pour accepter le cookie
