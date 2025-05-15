@@ -29,43 +29,48 @@ public class JwtFilter extends OncePerRequestFilter {
     private UserRepository userRepository;
 
 
+@Override
+protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                FilterChain filterChain) throws ServletException, IOException {
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    String path = request.getServletPath();
+    if (path.startsWith("/api/auth") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger")) {
+        filterChain.doFilter(request, response);
+        return;
+    }
 
-        // 🔒 Ignore les routes publiques (auth et docs Swagger)
-        String path = request.getServletPath();
-        if (path.startsWith("/api/auth") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        String authHeader = request.getHeader("Authorization");
+    String token = null;
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            String username = jwtUtil.extractUsername(token);
-
-
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                User user = userRepository.findByEmail(username).orElse(null);
-
-                if (user != null && jwtUtil.validateToken(token)) {
-                    // 🟡 Extraire le rôle du token
-                    Claims claims = jwtUtil.extractAllClaims(token);
-                    String role = claims.get("role", String.class);
-
-                    // 🔐 Ajouter ROLE_ devant car Spring attend "ROLE_ADMIN"
-                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
-
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(user, null, List.of(authority));
-
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+    // ✅ Lire le JWT depuis le cookie "jwt"
+    if (request.getCookies() != null) {
+        for (var cookie : request.getCookies()) {
+            if (cookie.getName().equals("jwt")) {
+                token = cookie.getValue();
+                break;
             }
         }
-        filterChain.doFilter(request, response);
     }
+
+    if (token != null) {
+        String username = jwtUtil.extractUsername(token);
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = userRepository.findByEmail(username).orElse(null);
+
+            if (user != null && jwtUtil.validateToken(token)) {
+                Claims claims = jwtUtil.extractAllClaims(token);
+                String role = claims.get("role", String.class);
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(user, null, List.of(authority));
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+    }
+
+    filterChain.doFilter(request, response);
+}
+
 }
