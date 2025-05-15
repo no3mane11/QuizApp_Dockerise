@@ -20,3 +20,8 @@ export const getAttemptByIdApi = async (attemptId: string) => {
   const response = await api.get<QuizAttempt>(`/attempts/${attemptId}`);
   return response.data;
 };
+
+export const getAttemptById = async (id: string) => {
+  const res = await axios.get(`/attempts/${id}`);
+  return res.data;
+};

@@ -1,6 +1,16 @@
 import api from './api'; // ✅ utilise l'instance configurée
 import { Quiz } from '../context/QuizContext';
 
+export const generateAIQuiz = async (payload: {
+  topic: string;
+  category: string;
+  numQuestions: number;
+  difficulty: string;
+}) => {
+  const response = await api.post('/quizzes/ai-generate', payload);
+  return response.data;
+};
+
 // ✅ GET tous les quiz
 export const getAllQuizzes = async (): Promise<Quiz[]> => {
   const response = await api.get('/quizzes'); // ✅ baseURL est déjà dans api.ts

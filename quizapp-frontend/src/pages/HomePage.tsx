@@ -21,10 +21,10 @@ const HomePage = () => {
      {isAdmin && (
   <div className="mb-6 text-right">
     <Link
-      to="/create-quiz"
+      to="/generate-quiz"
        className="px-8 py-4 bg-green-200 text-gray-800 text-lg font-semibold rounded-lg hover:bg-gray-300 transition"
     >
-      ➕ Créer un nouveau quiz
+      ➕ Créer un quiz aide au AI
     </Link>
   </div>
 )}

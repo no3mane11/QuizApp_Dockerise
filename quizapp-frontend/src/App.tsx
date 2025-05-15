@@ -14,10 +14,15 @@ import BrowseQuizzesPage from './pages/BrowseQuizzesPage';
 import CreateCategoryPage from './pages/admin/CreateCategoryPage'
 import ManageUsersPage from './pages/admin/ManageUsersPage';
 import ManageQuizzesPage from './pages/admin/ManageQuizPage'; 
-import EditSingleQuizPage from './pages/admin/EditSingleQuizPage';// <-- Ajouté ici !!
+import EditSingleQuizPage from './pages/admin/EditSingleQuizPage';
+import GenerateQuizPage from './pages/GenerateQuizPage';
+import QuizPreviewPage from './pages/QuizPreviewPage';
+import PlayGeneratedQuizPage from './pages/PlayGeneratedQuizPage';// <-- Ajouté ici !!
+
 import { QuizProvider } from './context/QuizContext';
 import { AuthProvider } from './context/AuthContext';
 import { AttemptProvider } from './context/AttemptContext';
+
 
 
 function App() {
@@ -42,6 +47,10 @@ function App() {
                   <Route path='/admin/manage-quizzes' element={<ManageQuizzesPage />} />
                   <Route path='/admin/edit-quiz/:quizId' element={<EditSingleQuizPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/generate-quiz" element={<GenerateQuizPage />} />
+                  <Route path="/quiz/preview" element={<QuizPreviewPage />} />
+<Route path="/quiz/play" element={<PlayGeneratedQuizPage />} />
+
  {/* Ajouté ici !! */}
 
                   <Route path="*" element={<NotFoundPage />} />

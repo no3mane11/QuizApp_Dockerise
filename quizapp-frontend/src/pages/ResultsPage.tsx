@@ -1,4 +1,3 @@
-// src/pages/ResultsPage.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getAttemptByIdApi } from '../api/attemptApi';
@@ -8,21 +7,41 @@ const ResultsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { fetchQuizById, currentQuiz } = useQuiz();
   const [attempt, setAttempt] = useState<any>(null);
+  const [quizQuestions, setQuizQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (id) {
+      if (!id) return;
+
+      try {
         const attemptData = await getAttemptByIdApi(id);
         setAttempt(attemptData);
-        await fetchQuizById(attemptData.quizId);
+
+        if (attemptData.quizId === "generated") {
+          // IA quiz : construire les questions depuis les réponses
+          const generatedQuestions = Object.entries(attemptData.answers).map(([qid, answer]) => ({
+            id: qid,
+            text: qid,
+            correctAnswer: answer,
+            type: "multiple-choice",
+          }));
+          setQuizQuestions(generatedQuestions);
+        } else {
+          await fetchQuizById(attemptData.quizId);
+          setQuizQuestions(currentQuiz?.questions || []);
+        }
+      } catch (err) {
+        console.error("Erreur chargement des résultats :", err);
+      } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, [id, fetchQuizById]);
 
-  if (loading || !attempt || !currentQuiz) return <div className="text-center p-8">Loading results...</div>;
+  if (loading || !attempt) return <div className="text-center p-8">Loading results...</div>;
 
   const { answers, score } = attempt;
 
@@ -45,8 +64,8 @@ const ResultsPage = () => {
         </Link>
       </div>
 
-      {currentQuiz.questions.map((question, index) => {
-        const userAnswer = answers[question.id || ''];
+      {quizQuestions.map((question, index) => {
+        const userAnswer = answers[question.id];
         const correctAnswer = question.correctAnswer;
         const isCorrect =
           question.type === 'short-answer'

@@ -31,4 +31,51 @@ public class Quiz {
         this.category = category;
     }
 
+    public java.lang.String getId() {
+        return id;
+    }
+
+    public void setId(java.lang.String id) {
+        this.id = id;
+    }
+
+    public java.lang.String getTitle() {
+        return title;
+    }
+
+    public void setTitle(java.lang.String title) {
+        this.title = title;
+    }
+
+    public java.lang.String getDescription() {
+        return description;
+    }
+
+    public void setDescription(java.lang.String description) {
+        this.description = description;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public java.lang.String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(java.lang.String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }

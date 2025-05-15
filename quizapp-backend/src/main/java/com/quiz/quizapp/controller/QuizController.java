@@ -7,6 +7,14 @@ import com.quiz.quizapp.model.Quiz;
 import com.quiz.quizapp.model.Category;
 import com.quiz.quizapp.repository.QuizRepository;
 import com.quiz.quizapp.repository.CategoryRepository;
+import com.quiz.quizapp.dto.AIQuizRequest;
+import com.quiz.quizapp.dto.AIQuizResponse;
+import com.quiz.quizapp.dto.QuestionDTO;
+import com.quiz.quizapp.service.OpenTDBService;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +33,19 @@ public class QuizController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private OpenTDBService openTDBService;
+
+    @PostMapping("/ai-generate")
+    public AIQuizResponse generateAIQuiz(@RequestBody AIQuizRequest request) {
+        List<QuestionDTO> questions = openTDBService.fetchQuizQuestions(
+                request.getCategory(), request.getDifficulty(), request.getNumQuestions()
+        );
+        AIQuizResponse response = new AIQuizResponse();
+        response.setTitle(request.getTopic() + " Quiz");
+        response.setQuestions(questions);
+        return response;
+    }
 
     // ✅ Créer un nouveau quiz
     @PostMapping
