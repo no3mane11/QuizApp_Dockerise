@@ -106,4 +106,4 @@ Le pipeline CI/CD est intégré via **Azure DevOps** pour le build, les tests et
 ## 📄 Auteurs
 
 - Sami Elhadraoui  
-- Projet académique dans le cadre du développement d'une application éducative
+- Haimoudi Nouaman
