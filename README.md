@@ -107,3 +107,6 @@ Le pipeline CI/CD est intégré via **Azure DevOps** pour le build, les tests et
 
 - Sami Elhadraoui  
 - Haimoudi Nouaman
+- Mohammed El Btaini
+- Yahya Hajji
+- Ziad Othmane
