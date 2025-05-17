@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // <<< ajoute ça
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import { PenSquare, Mail, Lock, User } from 'lucide-react';
 
@@ -24,12 +25,14 @@ const AuthPage = () => {
     try {
       if (mode === 'login') {
         await login(email, password);
+        toast.success('Login success !!');
       } else {
         if (!name) {
           throw new Error('Name is required');
         }
         await signup(name, email, password);
-        // Rediriger explicitement ici pour forcer vers login
+        // ✅ Redirige vers la page de connexion
+        toast.success('Compte créé avec succès ! Vous pouvez maintenant vous connecter.');
         navigate('/auth');
       }
     } catch (err) {
